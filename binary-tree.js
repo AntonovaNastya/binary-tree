@@ -66,35 +66,63 @@ class BinaryTree {
 	}
 
 	remove(data) {
-		//if(this.root == null ){
-		//	return;
-		//}
-		//var position = this.root;
-		//while (true) {
-		//	if (!position) {
-		//		return;
-		//	}
-		//	if (position.data == data){
-		//		position = null;
-		//		return;
-		//	}
-		//	if (data > position.data) {
-		//		position = position.right;
-		//	}
-		//	else {
-		//		position = position.left;
-		//	}
-		//}
+		function minimum(x){
+			if (x.left == null)
+				return x;
+			return minimum(x.left);
+		}
+		var del = function(position, data){
+			if (position == null)
+				return position;
+			if (data < position.data)
+				position.left = del(position.left, data);
+			else {
+				if (data > position.data)
+					position.right = del(position.right, data);
+				else
+					if (position.left != null && position.right != null) {
+						position.data = minimum(position.right).data;
+						position.right = del(position.right, position.right.data);
+					}
+					else
+						if (position.left != null)
+							position = position.left;
+						else{
+								position = position.right;
+						}
+			}
+				return position;
+		};
+		if(this.root.left == null && this.root.right == null && this.root.data == data){
+			this.root = null;
+			return this.root;
+		}
+		else
+			return del(this.root, data);
 	}
 
 	size() {
-
+		var length = 0;
+		if (this.root == null){
+			return 0;
+		}
+		var step = function(position){
+			length++;
+			if(position.left != null){
+				step(position.left);
+			}
+			if(position.right != null){
+				step(position.right);
+			}
+		};
+		step(this.root);
+		return length;
 	}
 
 	isEmpty() {
-		//if(this.root = null)
-		//	return true;
-		//else
-		//	return false;
+		if(this.root == null)
+			return true;
+		else
+			return false;
 	}
 }
